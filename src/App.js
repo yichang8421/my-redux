@@ -28,7 +28,7 @@ const FirstChild = () => {
 }
 const SecondChild = () => <section>
     Second Child
-    <UserModifier/>
+    <UserModifier>你好</UserModifier>
 </section>
 
 function ThirdChild() {
@@ -63,7 +63,7 @@ const reducer = (state, {type, payload}) => {
 }
 
 const connect = (Component) => {
-    return () => {
+    return (props) => {
         const {appState, setAppState} = useContext(appContext)
         const dispatch = (action) => {
             setAppState(() => {
@@ -71,13 +71,14 @@ const connect = (Component) => {
             })
         }
 
-        return (<Component dispatch={dispatch} state={appState}/>)
+        return (<Component {...props} dispatch={dispatch} state={appState}/>)
     }
 }
 
-const UserModifier = connect(({dispatch, state}) => {
+const UserModifier = connect(({dispatch, state, children}) => {
     return (
         <div>
+            {children}
             <input
                 value={state.user.name}
                 onChange={(e) => {
