@@ -62,7 +62,7 @@ const reducer = (state, {type, payload}) => {
     }
 }
 
-const createWrapper = (Component) => {
+const connect = (Component) => {
     return () => {
         const {appState, setAppState} = useContext(appContext)
         const dispatch = (action) => {
@@ -75,7 +75,7 @@ const createWrapper = (Component) => {
     }
 }
 
-const UserModifier = createWrapper(({dispatch, state}) => {
+const UserModifier = connect(({dispatch, state}) => {
     return (
         <div>
             <input
