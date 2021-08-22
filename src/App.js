@@ -48,7 +48,7 @@ const User = () => {
     )
 }
 
-const createNewState = (state, actionType, actionData) => {
+const reducer = (state, actionType, actionData) => {
     if (actionType === "updeteUser") {
         return ({
             ...state,
@@ -70,7 +70,7 @@ const UserModifier = () => {
                 value={appState.user.name}
                 onChange={(e) => {
                     setAppState(() => {
-                        return createNewState(
+                        return reducer(
                             appState,
                             "updeteUser",
                             {name: e.target.value}
