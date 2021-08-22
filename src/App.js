@@ -28,7 +28,7 @@ const FirstChild = () => {
 }
 const SecondChild = () => <section>
     Second Child
-    <Wrapper/>
+    <UserModifier/>
 </section>
 
 function ThirdChild() {
@@ -75,7 +75,7 @@ const createWrapper = (Component) => {
     }
 }
 
-const UserModifier = ({dispatch, state}) => {
+const _UserModifier = ({dispatch, state}) => {
     return (
         <div>
             <input
@@ -93,6 +93,6 @@ const UserModifier = ({dispatch, state}) => {
     )
 }
 
-const Wrapper = createWrapper(UserModifier)
+const UserModifier = createWrapper(_UserModifier)
 
 export default App;
