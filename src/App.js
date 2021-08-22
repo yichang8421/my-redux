@@ -1,25 +1,73 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useContext} from "react"
+
+const appContext = React.createContext(null)
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const [appState, setAppState] = useState({
+        user: {
+            name: "andy8421",
+            age: 18
+        }
+    })
+    return (
+        <appContext.Provider value={{appState, setAppState}}>
+            <FirstChild/>
+            <SecondChild/>
+            <ThirdChild/>
+        </appContext.Provider>
+    );
+}
+
+const FirstChild = () => {
+    return (
+        <section>
+            First Child
+            <User/>
+        </section>
+    )
+}
+const SecondChild = () => <section>
+    Second Child
+    <UserModifier/>
+</section>
+
+function ThirdChild() {
+    return (
+        <section>
+            Third Child
+        </section>
+    )
+}
+
+const User = () => {
+    const {appState} = useContext(appContext)
+    return (
+        <div>
+            User: {appState.user.name}
+        </div>
+    )
+}
+
+const UserModifier = () => {
+    const {appState, setAppState} = useContext(appContext)
+    return (
+        <div>
+            <input
+                value={appState.user.name}
+                onChange={(e) => {
+                    // appState.user.name = e.target.value
+                    setAppState(() => {
+                        return ({
+                            ...appState,
+                            user: {
+                                name: e.target.value,
+                            }
+                        })
+                    })
+                }}
+            />
+        </div>
+    )
 }
 
 export default App;
