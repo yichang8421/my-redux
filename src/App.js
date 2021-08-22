@@ -61,15 +61,18 @@ const reducer = (state, {type, payload}) => {
         return state
     }
 }
-const Wrapper = () => {
-    const {appState, setAppState} = useContext(appContext)
-    const dispatch = (action) => {
-        setAppState(() => {
-            return reducer(appState, action)
-        })
-    }
 
-    return (<UserModifier dispatch={dispatch} state={appState}/>)
+const createWrapper = (Component) => {
+    return () => {
+        const {appState, setAppState} = useContext(appContext)
+        const dispatch = (action) => {
+            setAppState(() => {
+                return reducer(appState, action)
+            })
+        }
+
+        return (<Component dispatch={dispatch} state={appState}/>)
+    }
 }
 
 const UserModifier = ({dispatch, state}) => {
@@ -89,5 +92,7 @@ const UserModifier = ({dispatch, state}) => {
         </div>
     )
 }
+
+const Wrapper = createWrapper(UserModifier)
 
 export default App;
