@@ -48,6 +48,19 @@ const User = () => {
     )
 }
 
+const createNewState = (state, actionType, actionData) => {
+    if (actionType === "updeteUser") {
+        return ({
+            ...state,
+            user: {
+                ...state.user,
+                ...actionData
+            }
+        })
+    } else {
+        return state
+    }
+}
 
 const UserModifier = () => {
     const {appState, setAppState} = useContext(appContext)
@@ -57,13 +70,11 @@ const UserModifier = () => {
                 value={appState.user.name}
                 onChange={(e) => {
                     setAppState(() => {
-                        return ({
-                            ...appState,
-                            user: {
-                                ...appState.user,
-                                name: e.target.value
-                            }
-                        })
+                        return createNewState(
+                            appState,
+                            "updeteUser",
+                            {name: e.target.value}
+                        )
                     })
                 }}
             />
