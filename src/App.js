@@ -28,7 +28,7 @@ const FirstChild = () => {
 }
 const SecondChild = () => <section>
     Second Child
-    <UserModifier/>
+    <Wrapper/>
 </section>
 
 function ThirdChild() {
@@ -61,22 +61,28 @@ const reducer = (state, {type, payload}) => {
         return state
     }
 }
-
-const UserModifier = () => {
+const Wrapper = () => {
     const {appState, setAppState} = useContext(appContext)
+    const dispatch = (action) => {
+        setAppState(() => {
+            return reducer(appState, action)
+        })
+    }
+
+    return (<UserModifier dispatch={dispatch} state={appState}/>)
+}
+
+const UserModifier = ({dispatch, state}) => {
     return (
         <div>
             <input
-                value={appState.user.name}
+                value={state.user.name}
                 onChange={(e) => {
-                    setAppState(() => {
-                        return reducer(
-                            appState,
-                            {
-                                type: "updeteUser",
-                                payload: {name: e.target.value}
-                            }
-                        )
+                    dispatch({
+                        type: "updeteUser",
+                        payload: {
+                            name: e.target.value
+                        }
                     })
                 }}
             />
