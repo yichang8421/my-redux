@@ -55,7 +55,6 @@ const UserModifier = () => {
             <input
                 value={appState.user.name}
                 onChange={(e) => {
-                    // appState.user.name = e.target.value
                     setAppState(() => {
                         return ({
                             ...appState,
