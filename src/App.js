@@ -75,7 +75,7 @@ const createWrapper = (Component) => {
     }
 }
 
-const _UserModifier = ({dispatch, state}) => {
+const UserModifier = createWrapper(({dispatch, state}) => {
     return (
         <div>
             <input
@@ -91,8 +91,6 @@ const _UserModifier = ({dispatch, state}) => {
             />
         </div>
     )
-}
-
-const UserModifier = createWrapper(_UserModifier)
+})
 
 export default App;
