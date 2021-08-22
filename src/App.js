@@ -48,6 +48,7 @@ const User = () => {
     )
 }
 
+
 const UserModifier = () => {
     const {appState, setAppState} = useContext(appContext)
     return (
@@ -59,7 +60,8 @@ const UserModifier = () => {
                         return ({
                             ...appState,
                             user: {
-                                name: e.target.value,
+                                ...appState.user,
+                                name: e.target.value
                             }
                         })
                     })
