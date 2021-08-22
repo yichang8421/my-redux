@@ -48,13 +48,13 @@ const User = () => {
     )
 }
 
-const reducer = (state, actionType, actionData) => {
-    if (actionType === "updeteUser") {
+const reducer = (state, {type, payload}) => {
+    if (type === "updeteUser") {
         return ({
             ...state,
             user: {
                 ...state.user,
-                ...actionData
+                ...payload
             }
         })
     } else {
@@ -72,8 +72,10 @@ const UserModifier = () => {
                     setAppState(() => {
                         return reducer(
                             appState,
-                            "updeteUser",
-                            {name: e.target.value}
+                            {
+                                type: "updeteUser",
+                                payload: {name: e.target.value}
+                            }
                         )
                     })
                 }}
