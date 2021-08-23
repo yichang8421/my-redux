@@ -30,14 +30,18 @@ const SecondChild = () => {
     )
 }
 
-const ThirdChild = () => {
-    console.log("ThirdChild 执行了");
-    return (
-        <section>
-            Third Child
-        </section>
-    )
-}
+const ThirdChild = connect(state => {
+    return {group: state.group}
+})(
+    ({group}) => {
+        console.log("ThirdChild 执行了");
+        return (
+            <section>
+                Third Child
+                <div>Group: {group.name}</div>
+            </section>
+        )
+    })
 
 const User = connect(state => {
     return {user: state.user}
