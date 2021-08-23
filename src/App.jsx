@@ -7,7 +7,6 @@ const store = {
         user: {name: "andy8421", age: 18}
     },
     setState(newState) {
-        // console.log(newState)
         store.state = newState
         store.listeners.map(fn => fn(store.state))
     },
@@ -21,67 +20,7 @@ const store = {
     }
 }
 
-function App() {
-    return (
-        <appContext.Provider value={store}>
-            <FirstChild/>
-            <SecondChild/>
-            <ThirdChild/>
-        </appContext.Provider>
-    );
-}
-
-const FirstChild = () => {
-    return (
-        <section>
-            First Child
-            <User/>
-        </section>
-    )
-}
-const SecondChild = () => <section>
-    Second Child
-    <UserModifier>你好</UserModifier>
-</section>
-
-function ThirdChild() {
-    return (
-        <section>
-            Third Child
-        </section>
-    )
-}
-
-const connect = (Component) => {
-    return (props) => {
-        const {state, setState, subscribe} = useContext(appContext)
-        const [, update] = useState({})
-
-        useEffect(() => {
-            subscribe(() => {
-                update({})
-            })
-        }, [subscribe])
-
-        const dispatch = (action) => {
-            setState(reducer(state, action))
-            // 此处 setState 是 App 的 setState 方法。不是 React 提供的 setState 方法。
-
-            // update({})
-            // 调用 App 的 setState 方法后，store 的值发生改变。此时调用 update(),将使当前组件重新渲染。
-        }
-
-        return (<Component {...props} dispatch={dispatch} state={state}/>)
-    }
-}
-
-const User = connect(({state}) => {
-    return (
-        <div>
-            User: {state.user.name}
-        </div>
-    )
-})
+console.log(store.listeners);
 
 const reducer = (state, {type, payload}) => {
     if (type === "updeteUser") {
@@ -97,9 +36,77 @@ const reducer = (state, {type, payload}) => {
     }
 }
 
+const connect = (Component) => {
+    return (props) => {
+        const {state, setState, subscribe} = useContext(appContext)
+        const [, update] = useState({})
 
+        useEffect(() => {
+            subscribe(() => {
+                update({})
+            })
+        }, [subscribe])
+
+        const dispatch = (action) => {
+            setState(reducer(state, action))
+            // update({})
+        }
+
+        return (<Component {...props} dispatch={dispatch} state={state}/>)
+    }
+}
+
+
+function App() {
+    return (
+        <appContext.Provider value={store}>
+            <FirstChild/>
+            <SecondChild/>
+            <ThirdChild/>
+        </appContext.Provider>
+    );
+}
+
+const FirstChild = () => {
+    console.log("FirstChild 执行了");
+    return (
+        <section>
+            First Child
+            <User/>
+        </section>
+    )
+}
+const SecondChild = () => {
+    console.log("SecondChild 执行了");
+
+    return (
+        <section>
+            Second Child
+            <UserModifier>你好</UserModifier>
+        </section>
+    )
+}
+
+const ThirdChild = () => {
+    console.log("ThirdChild 执行了");
+    return (
+        <section>
+            Third Child
+        </section>
+    )
+}
+
+const User = connect(({state}) => {
+    console.log("User 执行了");
+    return (
+        <div>
+            User: {state.user.name}
+        </div>
+    )
+})
 
 const UserModifier = connect(({dispatch, state, children}) => {
+    console.log("UserModifier 执行了");
     const onChange = (e) => {
         dispatch({
             type: "updeteUser",
